@@ -88,6 +88,7 @@ class Mage_Oauth_Helper_Data extends Mage_Core_Helper_Abstract
      */
     protected function _generateRandomString($length)
     {
+
         /** @var $helper Mage_Core_Helper_Data */
         $helper = Mage::helper('core');
 

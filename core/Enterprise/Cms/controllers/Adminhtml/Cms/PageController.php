@@ -109,9 +109,7 @@ class Enterprise_Cms_Adminhtml_Cms_PageController extends Mage_Adminhtml_Cms_Pag
                 $this->_handles[] = 'adminhtml_cms_page_edit_changes';
             }
         } else if (!$page->hasUnderVersionControl()) {
-            $page->setUnderVersionControl(
-                (int)Mage::getSingleton('enterprise_cms/config')->getDefaultVersioningStatus()
-            );
+            $page->setUnderVersionControl((int)Mage::getSingleton('enterprise_cms/config')->getDefaultVersioningStatus());
         }
 
         $this->_title($page->getId() ? $page->getTitle() : $this->__('New Page'));
@@ -170,9 +168,7 @@ class Enterprise_Cms_Adminhtml_Cms_PageController extends Mage_Adminhtml_Cms_Pag
                 $this->_getSession()->addError($e->getMessage());
             } catch (Exception $e) {
                 Mage::logException($e);
-                $this->_getSession()->addError(
-                    Mage::helper('enterprise_cms')->__('An error occurred while deleting versions.')
-                );
+                $this->_getSession()->addError(Mage::helper('enterprise_cms')->__('An error occurred while deleting versions.'));
             }
         }
         $this->_redirect('*/*/edit', array('_current' => true, 'tab' => 'versions'));

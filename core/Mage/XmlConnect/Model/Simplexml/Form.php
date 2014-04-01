@@ -352,8 +352,7 @@ class Mage_XmlConnect_Model_Simplexml_Form extends Mage_XmlConnect_Model_Simplex
     public function toXmlObject()
     {
         $xmlObj = $this->getXmlObject();
-        $useContainer = $this->getUseContainer();
-        if ($useContainer) {
+        if ($useContainer = $this->getUseContainer()) {
             $this->_addRequiredAttributes($xmlObj);
             foreach ($this->getAttributes() as $key => $val) {
                 $xmlObj->addAttribute($key, $xmlObj->xmlAttribute($val));
@@ -385,28 +384,5 @@ class Mage_XmlConnect_Model_Simplexml_Form extends Mage_XmlConnect_Model_Simplex
             return $this->toXmlObject()->asNiceXml();
         }
         Mage::throwException(Mage::helper('xmlconnect')->__('Container is not defined.'));
-    }
-
-    /**
-     * Add suffix to form element name
-     *
-     * @param string $name
-     * @param string  $suffix
-     * @return string
-     */
-    public function addSuffixToName($name, $suffix)
-    {
-        if (!$name) {
-            return $suffix;
-        }
-        $vars = explode('[', $name);
-        $newName = $suffix;
-        foreach ($vars as $index => $value) {
-            $newName .= '[' . $value;
-            if ($index == 0) {
-                $newName .= ']';
-            }
-        }
-        return $newName;
     }
 }

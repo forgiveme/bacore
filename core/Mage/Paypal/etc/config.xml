@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Mage_Paypal>
-            <version>1.6.0.4</version>
+            <version>1.6.0.2</version>
         </Mage_Paypal>
     </modules>
     <global>
@@ -156,16 +156,6 @@
         </events>
     </frontend>
     <adminhtml>
-        <events>
-            <adminhtml_init_system_config>
-                <observers>
-                    <paypal>
-                        <class>paypal/observer</class>
-                        <method>loadCountryDependentSolutionsConfig</method>
-                    </paypal>
-                </observers>
-            </adminhtml_init_system_config>
-        </events>
         <translate>
             <modules>
                 <Mage_Paypal>
@@ -212,16 +202,14 @@
                 <authorization_honor_period>3</authorization_honor_period>
                 <order_valid_period>29</order_valid_period>
                 <child_authorization_number>1</child_authorization_number>
-                <verify_peer>1</verify_peer>
             </paypal_express>
             <paypal_direct>
                 <model>paypal/direct</model>
-                <title>PayPal Payments Pro</title>
+                <title>PayPal Direct Payment</title>
                 <payment_action>Authorization</payment_action>
                 <cctypes>VI,MC</cctypes>
                 <useccv>1</useccv>
                 <group>paypal</group>
-                <verify_peer>1</verify_peer>
             </paypal_direct>
             <paypal_standard>
                 <model>paypal/standard</model>
@@ -229,7 +217,6 @@
                 <payment_action>Sale</payment_action>
                 <line_items_enabled>1</line_items_enabled>
                 <group>paypal</group>
-                <verify_peer>1</verify_peer>
             </paypal_standard>
             <paypaluk_express>
                 <title>PayPal Express Checkout Payflow Edition</title>
@@ -238,15 +225,13 @@
                 <visible_on_cart>1</visible_on_cart>
                 <visible_on_product>1</visible_on_product>
                 <group>paypal</group>
-                <verify_peer>1</verify_peer>
             </paypaluk_express>
             <paypaluk_direct>
-                <title>PayPal Payments Pro Payflow Edition</title>
+                <title>PayPal Direct Payment Payflow Edition</title>
                 <payment_action>Authorization</payment_action>
                 <cctypes>VI,MC,AE</cctypes>
                 <useccv>1</useccv>
                 <group>paypal</group>
-                <verify_peer>1</verify_peer>
             </paypaluk_direct>
             <verisign>
                 <model>paypal/payflowpro</model>
@@ -259,7 +244,6 @@
                 <user backend_model="adminhtml/system_config_backend_encrypted"/>
                 <pwd backend_model="adminhtml/system_config_backend_encrypted"/>
                 <group>paypal</group>
-                <verify_peer>1</verify_peer>
             </verisign>
             <paypal_billing_agreement>
                 <active>1</active>
@@ -267,7 +251,6 @@
                 <model>paypal/method_agreement</model>
                 <title>PayPal Billing Agreement</title>
                 <group>paypal</group>
-                <verify_peer>1</verify_peer>
             </paypal_billing_agreement>
             <payflow_link>
                 <model>paypal/payflowlink</model>
@@ -276,11 +259,6 @@
                 <pwd backend_model="adminhtml/system_config_backend_encrypted"/>
                 <group>paypal</group>
                 <title>Credit Card</title>
-                <csc_required>1</csc_required>
-                <csc_editable>1</csc_editable>
-                <url_method>GET</url_method>
-                <email_confirmation>0</email_confirmation>
-                <verify_peer>1</verify_peer>
             </payflow_link>
             <payflow_advanced>
                 <model>paypal/payflowadvanced</model>
@@ -292,11 +270,6 @@
                 <partner>PayPal</partner>
                 <vendor>PayPal</vendor>
                 <user>PayPal</user>
-                <csc_required>1</csc_required>
-                <csc_editable>1</csc_editable>
-                <url_method>GET</url_method>
-                <email_confirmation>0</email_confirmation>
-                <verify_peer>1</verify_peer>
             </payflow_advanced>
             <hosted_pro>
                 <model>paypal/hostedpro</model>
@@ -304,7 +277,6 @@
                 <payment_action>Authorization</payment_action>
                 <group>paypal</group>
                 <display_ec>0</display_ec>
-                <verify_peer>1</verify_peer>
             </hosted_pro>
         </payment>
     </default>

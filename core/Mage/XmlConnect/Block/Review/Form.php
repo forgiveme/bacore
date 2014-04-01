@@ -31,7 +31,7 @@
  * @package     Mage_XmlConnect
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_XmlConnect_Block_Review_Form extends Mage_Core_Block_Abstract
+class Mage_XmlConnect_Block_Review_Form extends Mage_Core_Block_Template
 {
     /**
      * Collection of ratings
@@ -68,7 +68,6 @@ class Mage_XmlConnect_Block_Review_Form extends Mage_Core_Block_Abstract
                     'label'     => $rating->getRatingCode(),
                     'required'  => 'true'
                 ));
-
                 foreach ($rating->getOptions() as $option) {
                     $ratingField->addCustomChild('value', $option->getId());
                 }

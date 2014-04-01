@@ -871,19 +871,6 @@ class Mage_Paypal_Model_Express_Checkout
     }
 
     /**
-     * Checks if customer with email coming from Express checkout exists
-     *
-     * @return int
-     */
-    protected function _lookupCustomerId()
-    {
-        return Mage::getModel('customer/customer')
-            ->setWebsiteId(Mage::app()->getWebsite()->getId())
-            ->loadByEmail($this->_quote->getCustomerEmail())
-            ->getId();
-    }
-
-    /**
      * Prepare quote for customer registration and customer order submit
      * and restore magento customer data from quote
      *
@@ -894,12 +881,6 @@ class Mage_Paypal_Model_Express_Checkout
         $quote      = $this->_quote;
         $billing    = $quote->getBillingAddress();
         $shipping   = $quote->isVirtual() ? null : $quote->getShippingAddress();
-
-        $customerId = $this->_lookupCustomerId();
-        if ($customerId) {
-            $this->getCustomerSession()->loginById($customerId);
-            return $this->_prepareCustomerQuote();
-        }
 
         $customer = $quote->getCustomer();
         /** @var $customer Mage_Customer_Model_Customer */

@@ -30,7 +30,7 @@ $installer = $this;
 
 Mage::getModel('catalog/product_flat_flag')
     ->loadSelf()
-    ->setIsBuilt(false)
+    ->setIsBuild(false)
     ->save();
 
 $installer->startSetup();

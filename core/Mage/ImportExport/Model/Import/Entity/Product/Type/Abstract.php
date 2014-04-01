@@ -96,7 +96,9 @@ abstract class Mage_ImportExport_Model_Import_Entity_Product_Type_Abstract
      * Object constructor.
      *
      * @param array $params
+     * @param string $type Product type (simple, configurable, etc.)
      * @throws Exception
+     * @return void
      */
     final public function __construct(array $params)
     {
@@ -283,10 +285,9 @@ abstract class Mage_ImportExport_Model_Import_Entity_Product_Type_Abstract
      * Prepare attributes values for save: remove non-existent, remove empty values, remove static.
      *
      * @param array $rowData
-     * @param bool $withDefaultValue
      * @return array
      */
-    public function prepareAttributesForSave(array $rowData, $withDefaultValue = true)
+    public function prepareAttributesForSave(array $rowData)
     {
         $resultAttrs = array();
 
@@ -299,7 +300,7 @@ abstract class Mage_ImportExport_Model_Import_Entity_Product_Type_Abstract
                         : $rowData[$attrCode];
                 } elseif (array_key_exists($attrCode, $rowData)) {
                     $resultAttrs[$attrCode] = $rowData[$attrCode];
-                } elseif ($withDefaultValue && null !== $attrParams['default_value']) {
+                } elseif (null !== $attrParams['default_value']) {
                     $resultAttrs[$attrCode] = $attrParams['default_value'];
                 }
             }

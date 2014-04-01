@@ -140,11 +140,7 @@ class Enterprise_Pbridge_Model_Payment_Method_Payflow_Pro extends Mage_Paypal_Mo
      */
     public function isAvailable($quote = null)
     {
-        $storeId = Mage::app()->getStore($this->getStore())->getId();
-        $config = Mage::getModel('paypal/config')->setStoreId($storeId);
-
-        return $this->getPbridgeMethodInstance()->isDummyMethodAvailable($quote)
-            && $config->isMethodAvailable($this->getOriginalCode());
+        return $this->getPbridgeMethodInstance()->isDummyMethodAvailable($quote);
     }
 
     /**
@@ -194,8 +190,6 @@ class Enterprise_Pbridge_Model_Payment_Method_Payflow_Pro extends Mage_Paypal_Mo
      */
     public function capture(Varien_Object $payment, $amount)
     {
-        $payment->setShouldCloseParentTransaction(!$this->_getCaptureAmount($amount));
-        $payment->setFirstCaptureFlag(!$this->getInfoInstance()->hasAmountPaid());
         $response = $this->getPbridgeMethodInstance()->capture($payment, $amount);
         if (!$response) {
             $response = $this->getPbridgeMethodInstance()->authorize($payment, $amount);
@@ -216,7 +210,6 @@ class Enterprise_Pbridge_Model_Payment_Method_Payflow_Pro extends Mage_Paypal_Mo
     {
         $response = $this->getPbridgeMethodInstance()->refund($payment, $amount);
         $payment->addData((array)$response);
-        $payment->setShouldCloseParentTransaction(!$payment->getCreditmemo()->getInvoice()->canRefund());
         return $this;
     }
 

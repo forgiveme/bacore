@@ -74,8 +74,6 @@ class Enterprise_Checkout_Block_Sku_Products extends Mage_Checkout_Block_Cart
 
     /**
      * Prepare cart items URLs
-     *
-     * @deprecated after 1.12.0.2
      */
     public function prepareItemUrls()
     {

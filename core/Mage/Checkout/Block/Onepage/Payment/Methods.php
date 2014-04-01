@@ -40,14 +40,16 @@ class Mage_Checkout_Block_Onepage_Payment_Methods extends Mage_Payment_Block_For
     }
 
     /**
-     * Check payment method model
+     * Check and prepare payment method model
      *
-     * @param Mage_Payment_Model_Method_Abstract|null
      * @return bool
      */
     protected function _canUseMethod($method)
     {
-        return $method && $method->canUseCheckout() && parent::_canUseMethod($method);
+        if (!$method || !$method->canUseCheckout()) {
+            return false;
+        }
+        return parent::_canUseMethod($method);
     }
 
     /**

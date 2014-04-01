@@ -35,46 +35,47 @@ class Mage_Sales_Model_Order_Creditmemo_Api extends Mage_Sales_Model_Api_Resourc
 {
 
     /**
-     * Initialize attributes mapping
+     * Initialize attributes' mapping
      */
     public function __construct()
     {
-        $this->_attributesMap = array(
-            'creditmemo' => array('creditmemo_id' => 'entity_id'),
-            'creditmemo_item' => array('item_id' => 'entity_id'),
-            'creditmemo_comment' => array('comment_id' => 'entity_id')
+        $this->_attributesMap['creditmemo'] = array(
+            'creditmemo_id' => 'entity_id'
+        );
+        $this->_attributesMap['creditmemo_item'] = array(
+            'item_id'    => 'entity_id'
+        );
+        $this->_attributesMap['creditmemo_comment'] = array(
+            'comment_id' => 'entity_id'
         );
     }
 
     /**
-     * Retrieve credit memos list. Filtration could be applied
+     * Retrieve credit memos by filters
      *
-     * @param null|object|array $filters
+     * @param array|null $filter
      * @return array
      */
     public function items($filters = null)
     {
-        $creditmemos = array();
-        /** @var $apiHelper Mage_Api_Helper_Data */
-        $apiHelper = Mage::helper('api');
-        $filters = $apiHelper->parseFilters($filters, $this->_attributesMap['creditmemo']);
-        /** @var $creditmemoModel Mage_Sales_Model_Order_Creditmemo */
-        $creditmemoModel = Mage::getModel('sales/order_creditmemo');
+        $filter = $this->_prepareListFilter($filters);
         try {
-            $creditMemoCollection = $creditmemoModel->getFilteredCollectionItems($filters);
-            foreach ($creditMemoCollection as $creditmemo) {
-                $creditmemos[] = $this->_getAttributes($creditmemo, 'creditmemo');
+            $result = array();
+            /** @var $creditmemoModel Mage_Sales_Model_Order_Creditmemo */
+            $creditmemoModel = Mage::getModel('sales/order_creditmemo');
+            // map field name entity_id to creditmemo_id
+            foreach ($creditmemoModel->getFilteredCollectionItems($filter) as $creditmemo) {
+                $result[] = $this->_getAttributes($creditmemo, 'creditmemo');
             }
         } catch (Exception $e) {
             $this->_fault('invalid_filter', $e->getMessage());
         }
-        return $creditmemos;
+        return $result;
     }
 
     /**
      * Make filter of appropriate format for list method
      *
-     * @deprecated since 1.7.0.1
      * @param array|null $filter
      * @return array|null
      */
@@ -121,7 +122,7 @@ class Mage_Sales_Model_Order_Creditmemo_Api extends Mage_Sales_Model_Api_Resourc
     /**
      * Create new credit memo for order
      *
-     * @param string $orderIncrementId
+     * @param string $creditmemoIncrementId
      * @param array $creditmemoData array('qtys' => array('sku1' => qty1, ... , 'skuN' => qtyN),
      *      'shipping_amount' => value, 'adjustment_positive' => value, 'adjustment_negative' => value)
      * @param string|null $comment
@@ -130,11 +131,11 @@ class Mage_Sales_Model_Order_Creditmemo_Api extends Mage_Sales_Model_Api_Resourc
      * @param string $refundToStoreCreditAmount
      * @return string $creditmemoIncrementId
      */
-    public function create($orderIncrementId, $creditmemoData = null, $comment = null, $notifyCustomer = false,
+    public function create($creditmemoIncrementId, $creditmemoData = null, $comment = null, $notifyCustomer = false,
         $includeComment = false, $refundToStoreCreditAmount = null)
     {
         /** @var $order Mage_Sales_Model_Order */
-        $order = Mage::getModel('sales/order')->load($orderIncrementId, 'increment_id');
+        $order = Mage::getModel('sales/order')->load($creditmemoIncrementId, 'increment_id');
         if (!$order->getId()) {
             $this->_fault('order_not_exists');
         }

@@ -47,7 +47,7 @@ class Mage_XmlConnect_Block_Catalog_Product_Related extends Mage_XmlConnect_Bloc
         $productObj = $this->getParentBlock()->getProduct();
 
         if (is_object(Mage::getConfig()->getNode('modules/Enterprise_TargetRule'))) {
-            Mage::register('product', $productObj, true);
+            Mage::register('product', $productObj);
 
             $productBlock = $this->getLayout()->addBlock(
                 'enterprise_targetrule/catalog_product_list_related', 'relatedProducts'
@@ -111,7 +111,7 @@ class Mage_XmlConnect_Block_Catalog_Product_Related extends Mage_XmlConnect_Bloc
      */
     protected function _getProductCollection()
     {
-        if ($this->_productCollection === null) {
+        if (is_null($this->_productCollection)) {
             $collection = $this->getParentBlock()->getProduct()->getRelatedProductCollection();
             Mage::getSingleton('catalog/layer')->prepareProductCollection($collection);
             /**

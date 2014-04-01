@@ -624,9 +624,7 @@ abstract class Enterprise_Staging_Model_Resource_Adapter_Abstract extends Mage_C
 
         if (!$this->tableExists($table)) {
             if ($strongRestrict) {
-                throw new Enterprise_Staging_Exception(
-                    Mage::helper('enterprise_staging')->__('Staging Table %s does not exist', $table)
-                );
+                throw new Enterprise_Staging_Exception(Mage::helper('enterprise_staging')->__('Staging Table %s does not exist', $table));
             }
             return false;
         }

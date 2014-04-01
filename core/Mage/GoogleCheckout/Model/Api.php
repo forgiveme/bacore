@@ -94,9 +94,7 @@ class Mage_GoogleCheckout_Model_Api extends Varien_Object
 
     public function deliver($gOrderId, $carrier, $trackingNo, $sendMail = true)
     {
-        $this->setCarriers(array('dhl' => 'DHL', 'fedex' => 'FedEx', 'ups' => 'UPS', 'usps' => 'USPS'));
-        Mage::dispatchEvent('googlecheckout_api_deliver_carriers_array', array('api' => $this));
-        $gCarriers = $this->getCarriers();
+        $gCarriers = array('dhl' => 'DHL', 'fedex' => 'FedEx', 'ups' => 'UPS', 'usps' => 'USPS');
         $carrier = strtolower($carrier);
         $carrier = isset($gCarriers[$carrier]) ? $gCarriers[$carrier] : 'Other';
 

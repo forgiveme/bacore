@@ -31,7 +31,8 @@
  * @package     Mage_XmlConnect
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_XmlConnect_Block_Adminhtml_Mobile_Form_Element_Theme extends Varien_Data_Form_Element_Text
+class Mage_XmlConnect_Block_Adminhtml_Mobile_Form_Element_Theme
+    extends Varien_Data_Form_Element_Text
 {
     /**
      * Generate themes (colors) html
@@ -40,8 +41,9 @@ class Mage_XmlConnect_Block_Adminhtml_Mobile_Form_Element_Theme extends Varien_D
      */
     public function getHtml()
     {
-        $blockClassName = Mage::getConfig()->getBlockClassName('xmlconnect/adminhtml_mobile_edit_tab_design_themes');
-        $block = Mage::getModel($blockClassName);
+        $blockClassName = Mage::getConfig()
+            ->getBlockClassName('xmlconnect/adminhtml_mobile_edit_tab_design_themes');
+        $block = new $blockClassName;
         $block->setThemes($this->getThemes());
         $block->setName($this->getName());
         $block->setValue($this->getValue());

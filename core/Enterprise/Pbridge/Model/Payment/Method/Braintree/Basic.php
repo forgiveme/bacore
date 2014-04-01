@@ -201,7 +201,7 @@ class Enterprise_Pbridge_Model_Payment_Method_Braintree_Basic extends Mage_Payme
     {
         $response = $this->getPbridgeMethodInstance()->refund($payment, $amount);
         $payment->addData((array)$response);
-        $payment->setIsTransactionClosed(1);
+        $payment->setShouldCloseParentTransaction(false);
         return $this;
     }
 

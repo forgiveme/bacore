@@ -111,27 +111,11 @@ class Mage_XmlConnect_Model_Resource_Application extends Mage_Core_Model_Resourc
     /**
      * Update all applications "updated at" parameter with current date
      *
-     * @deprecated will remove in new release
      * @return Mage_XmlConnect_Model_Resource_Application
      */
     public function updateAllAppsUpdatedAtParameter()
     {
-        $this->_getWriteAdapter()->update(
-            $this->getMainTable(),
-            array('updated_at' => date('Y-m-d H:i:s'))
-        );
-        return $this;
-    }
-
-    /**
-     * Update all applications "updated at" parameter with current date
-     *
-     * @param Mage_XmlConnect_Model_Application $model
-     * @return Mage_XmlConnect_Model_Resource_Application
-     */
-    public function updateUpdatedAtParameter($model)
-    {
-        $this->_getWriteAdapter()->update($this->getMainTable(), array('updated_at' => $model->getUpdatedAt()));
+        $this->_getWriteAdapter()->update($this->getMainTable(), array('updated_at' => date('Y-m-d H:i:s')));
         return $this;
     }
 }

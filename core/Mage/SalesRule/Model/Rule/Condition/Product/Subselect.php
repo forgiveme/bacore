@@ -113,7 +113,7 @@ class Mage_SalesRule_Model_Rule_Condition_Product_Subselect
 
         $attr = $this->getAttribute();
         $total = 0;
-        foreach ($object->getQuote()->getAllVisibleItems() as $item) {
+        foreach ($object->getQuote()->getAllItems() as $item) {
             if (parent::validate($item)) {
                 $total += $item->getData($attr);
             }

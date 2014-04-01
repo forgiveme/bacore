@@ -54,7 +54,7 @@ class Mage_Api_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Go through a WSI args array and turns it to correct state.
+     * Go thru a WSI args array and turns it to correct state.
      *
      * @param Object $obj - Link to Object
      * @return Object
@@ -65,7 +65,7 @@ class Mage_Api_Helper_Data extends Mage_Core_Helper_Abstract
 
             $modifiedKeys = $this->clearWsiFootprints($obj);
 
-            foreach ($obj as $value) {
+            foreach ($obj as $key => $value) {
                 if (is_object($value)) {
                     $this->wsiArrayUnpacker($value);
                 }
@@ -79,15 +79,13 @@ class Mage_Api_Helper_Data extends Mage_Core_Helper_Abstract
             }
 
             foreach ($modifiedKeys as $arrKey) {
-                if ($arrKey !== 'complex_filter') {
-                    $this->associativeArrayUnpack($obj->$arrKey);
-                }
+                $this->associativeArrayUnpack($obj->$arrKey);
             }
         }
     }
 
     /**
-     * Go through an object parameters and unpack associative object to array.
+     * Go thru an object parameters and unpak associative object to array.
      *
      * @param Object $obj - Link to Object
      * @return Object
@@ -105,7 +103,7 @@ class Mage_Api_Helper_Data extends Mage_Core_Helper_Abstract
         } elseif (is_array($obj)) {
             $arr = array();
             $needReplacement = true;
-            foreach ($obj as &$value) {
+            foreach ($obj as $key => &$value) {
                 $isAssoc = $this->v2AssociativeArrayUnpacker($value);
                 if ($isAssoc) {
                     foreach ($value as $aKey => $aVal) {
@@ -129,7 +127,7 @@ class Mage_Api_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Go through mixed and turns it to a correct look.
+     * Go thru mixed and turns it to a correct look.
      *
      * @param Mixed $mixed A link to variable that may contain associative array.
      */
@@ -199,6 +197,7 @@ class Mage_Api_Helper_Data extends Mage_Core_Helper_Abstract
         if (is_array($mixed)) {
             $arrKeys = array_keys($mixed);
             $isDigit = false;
+            $isString = false;
             foreach ($arrKeys as $key) {
                 if (is_int($key)) {
                     $isDigit = true;
@@ -206,9 +205,9 @@ class Mage_Api_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
             if ($isDigit) {
-                $mixed = $this->packArrayToObject($mixed);
+                $mixed = $this->packArrayToObjec($mixed);
             } else {
-                $mixed = (object)$mixed;
+                $mixed = (object) $mixed;
             }
         }
         if (is_object($mixed) && isset($mixed->complexObjectArray)) {
@@ -225,7 +224,7 @@ class Mage_Api_Helper_Data extends Mage_Core_Helper_Abstract
      * @param Array $arr - Link to Object
      * @return Object
      */
-    public function packArrayToObject(Array $arr)
+    public function packArrayToObjec(Array $arr)
     {
         $obj = new stdClass();
         $obj->complexObjectArray = $arr;
@@ -251,99 +250,4 @@ class Mage_Api_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
     }
-
-    /**
-     * Parse filters and format them to be applicable for collection filtration
-     *
-     * @param null|object|array $filters
-     * @param array $fieldsMap Map of field names in format: array('field_name_in_filter' => 'field_name_in_db')
-     * @return array
-     */
-    public function parseFilters($filters, $fieldsMap = null)
-    {
-        // if filters are used in SOAP they must be represented in array format to be used for collection filtration
-        if (is_object($filters)) {
-            $parsedFilters = array();
-            // parse simple filter
-            if (isset($filters->filter) && is_array($filters->filter)) {
-                foreach ($filters->filter as $field => $value) {
-                    if (is_object($value) && isset($value->key) && isset($value->value)) {
-                        $parsedFilters[$value->key] = $value->value;
-                    } else {
-                        $parsedFilters[$field] = $value;
-                    }
-                }
-            }
-            // parse complex filter
-            if (isset($filters->complex_filter) && is_array($filters->complex_filter)) {
-                $parsedFilters += $this->_parseComplexFilter($filters->complex_filter);
-            }
-
-            $filters = $parsedFilters;
-        }
-        // make sure that method result is always array
-        if (!is_array($filters)) {
-            $filters = array();
-        }
-        // apply fields mapping
-        if (isset($fieldsMap) && is_array($fieldsMap)) {
-            foreach ($filters as $field => $value) {
-                if (isset($fieldsMap[$field])) {
-                    unset($filters[$field]);
-                    $field = $fieldsMap[$field];
-                    $filters[$field] = $value;
-                }
-            }
-        }
-        return $filters;
-    }
-
-    /**
-     * Parses complex filter, which may contain several nodes, e.g. when user want to fetch orders which were updated
-     * between two dates.
-     *
-     * @param array $complexFilter
-     * @return array
-     */
-    protected function _parseComplexFilter($complexFilter)
-    {
-        $parsedFilters = array();
-
-        foreach ($complexFilter as $filter) {
-            if (!isset($filter->key) || !isset($filter->value)) {
-                continue;
-            }
-
-            list($fieldName, $condition) = array($filter->key, $filter->value);
-            $conditionName = $condition->key;
-            $conditionValue = $condition->value;
-            $this->formatFilterConditionValue($conditionName, $conditionValue);
-
-            if (array_key_exists($fieldName, $parsedFilters)) {
-                $parsedFilters[$fieldName] += array($conditionName => $conditionValue);
-            } else {
-                $parsedFilters[$fieldName] = array($conditionName => $conditionValue);
-            }
-        }
-
-        return $parsedFilters;
-    }
-
-    /**
-     * Convert condition value from the string into the array
-     * for the condition operators that require value to be an array.
-     * Condition value is changed by reference
-     *
-     * @param string $conditionOperator
-     * @param string $conditionValue
-     */
-    public function formatFilterConditionValue($conditionOperator, &$conditionValue)
-    {
-        if (is_string($conditionOperator) && in_array($conditionOperator, array('in', 'nin', 'finset'))
-            && is_string($conditionValue)
-        ) {
-            $delimiter = ',';
-            $conditionValue = explode($delimiter, $conditionValue);
-        }
-    }
-}
+} // Class Mage_Api_Helper_Data End

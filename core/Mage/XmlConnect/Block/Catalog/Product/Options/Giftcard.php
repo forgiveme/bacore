@@ -160,6 +160,7 @@ class Mage_XmlConnect_Block_Catalog_Product_Options_Giftcard extends Mage_XmlCon
         /**
          * Render fixed amounts options
          */
+
         /** @var $fixedAmountsNode Mage_XmlConnect_Model_Simplexml_Element */
         $fixedAmountsNode = $optionsXmlObj->addChild('fixed_amounts');
         if ($this->isAmountAvailable($product)) {

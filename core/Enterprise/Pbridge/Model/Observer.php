@@ -93,9 +93,7 @@ class Enterprise_Pbridge_Model_Observer
         if ($profileStatus !== null) {
             $scope = $observer->getEvent()->getData('website') ? 'websites' : 'default';
             Mage::getConfig()->saveConfig('payment/pbridge/profilestatus', $profileStatus, $scope, $website->getId());
-            Mage::dispatchEvent('clean_cache_by_tags', array('tags' => array(
-                Mage_Core_Model_Config::CACHE_TAG
-            )));
+            Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG));
         }
         return $this;
     }

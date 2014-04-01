@@ -119,9 +119,7 @@ class Enterprise_Reminder_Model_Rule_Condition_Cart
     {
         $conditionValue = (int) $this->getValue();
         if ($conditionValue < 0) {
-            Mage::throwException(
-                Mage::helper('enterprise_reminder')->__('Root shopping cart condition should have days value at least 0.')
-            );
+            Mage::throwException(Mage::helper('enterprise_reminder')->__('Root shopping cart condition should have days value at least 0.'));
         }
 
         $table = $this->getResource()->getTable('sales/quote');

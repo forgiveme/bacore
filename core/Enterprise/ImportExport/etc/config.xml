@@ -82,14 +82,6 @@
                 </system_enterprise_import_export_log_error_email_template>
             </email>
         </template>
-        <importexport module="importexport">
-            <import_entities>
-                <catalog_product translate="label">
-                    <model_token>enterprise_importexport/import_entity_product</model_token>
-                    <label>Products</label>
-                </catalog_product>
-            </import_entities>
-        </importexport>
     </global>
     <admin>
         <routers>

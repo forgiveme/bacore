@@ -66,9 +66,7 @@ class Enterprise_Staging_Model_Entry
     public function getBaseFolder()
     {
         if (empty($this->_baseFolderName)) {
-            Mage::throwException(
-                Mage::helper('enterprise_staging')->__('There is wrong value in configuration for entry points folder name.')
-            );
+            Mage::throwException(Mage::helper('enterprise_staging')->__('There is wrong value in configuration for entry points folder name.'));
         }
         return BP . DS . $this->_baseFolderName;
     }

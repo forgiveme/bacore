@@ -125,9 +125,7 @@ class Enterprise_GiftRegistry_IndexController extends Mage_Core_Controller_Front
             }
             return;
         } catch (Exception $e) {
-            Mage::getSingleton('checkout/session')->addError(
-                $this->__('Failed to add shopping cart items to gift registry.')
-            );
+            Mage::getSingleton('checkout/session')->addError($this->__('Failed to add shopping cart items to gift registry.'));
         }
 
         if ($entity->getId()) {
@@ -533,9 +531,7 @@ class Enterprise_GiftRegistry_IndexController extends Mage_Core_Controller_Front
                             if (!empty($registrant[$idField])) {
                                 $person->load($registrant[$idField]);
                                 if (!$person->getId()) {
-                                    Mage::throwException(
-                                        Mage::helper('enterprise_giftregistry')->__('Incorrect recipient data.')
-                                    );
+                                    Mage::throwException(Mage::helper('enterprise_giftregistry')->__('Incorrect recipient data.'));
                                 }
                             } else {
                                 unset($registrant['person_id']);
@@ -582,9 +578,7 @@ class Enterprise_GiftRegistry_IndexController extends Mage_Core_Controller_Front
 
                     $address = $customer->getAddressItemById($addressId);
                     if (!$address) {
-                        Mage::throwException(
-                            Mage::helper('enterprise_giftregistry')->__('Incorrect address selected.')
-                        );
+                        Mage::throwException(Mage::helper('enterprise_giftregistry')->__('Incorrect address selected.'));
                     }
                     $model->importAddress($address);
                 }

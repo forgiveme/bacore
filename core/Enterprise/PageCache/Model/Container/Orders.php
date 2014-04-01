@@ -52,16 +52,6 @@ class Enterprise_PageCache_Model_Container_Orders extends Enterprise_PageCache_M
     }
 
     /**
-     * Retrieve cache identifier
-     *
-     * @return string
-     */
-    public function getCacheId()
-    {
-        return $this->_getCacheId();
-    }
-
-    /**
      * Get container individual additional cache id
      *
      * @return string | false

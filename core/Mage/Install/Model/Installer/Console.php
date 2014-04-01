@@ -157,12 +157,10 @@ class Mage_Install_Model_Installer_Console extends Mage_Install_Model_Installer_
         }
 
         /**
-         * Validate license agreement acceptance
+         * Validate license aggreement acceptance
          */
         if (!$this->_checkFlag($args['license_agreement_accepted'])) {
-            $this->addError(
-                'ERROR: You have to accept Magento license agreement terms and conditions to continue installation'
-            );
+            $this->addError('ERROR: You have to accept Magento license agreement terms and conditions to continue installation');
             return false;
         }
 
@@ -357,7 +355,7 @@ class Mage_Install_Model_Installer_Console extends Mage_Install_Model_Installer_
             /**
              * Install configuration
              */
-            $installer->installConfig($this->_getDataModel()->getConfigData());
+            $installer->installConfig($this->_getDataModel()->getConfigData()); // TODO fix wizard and simplify this everywhere
 
             if ($this->hasErrors()) {
                 return false;
@@ -394,9 +392,7 @@ class Mage_Install_Model_Installer_Console extends Mage_Install_Model_Installer_
             /**
              * Prepare encryption key and validate it
              */
-            $encryptionKey = empty($this->_args['encryption_key'])
-                ? md5(Mage::helper('core')->getRandomString(10))
-                : $this->_args['encryption_key'];
+            $encryptionKey = empty($this->_args['encryption_key']) ? md5(time()) : $this->_args['encryption_key'];
             $this->_getDataModel()->setEncryptionKey($encryptionKey);
             $installer->validateEncryptionKey($encryptionKey);
 

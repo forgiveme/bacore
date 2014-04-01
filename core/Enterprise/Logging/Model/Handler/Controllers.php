@@ -604,8 +604,7 @@ class Enterprise_Logging_Model_Handler_Controllers
         if ($messages) {
             $success = 'error' != $messages->getType();
         }
-        return $eventModel->setIsSuccess($success)
-            ->setInfo(Mage::helper('enterprise_logging')->__('Currency Rates Saved'));
+        return $eventModel->setIsSuccess($success)->setInfo(Mage::helper('enterprise_logging')->__('Currency Rates Saved'));
     }
 
     /**

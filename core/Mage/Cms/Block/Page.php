@@ -49,7 +49,6 @@ class Mage_Cms_Block_Page extends Mage_Core_Block_Abstract
             } else {
                 $page = Mage::getSingleton('cms/page');
             }
-            $this->addModelTags($page);
             $this->setData('page', $page);
         }
         return $this->getData('page');

@@ -52,7 +52,6 @@ class Mage_Cms_Block_Block extends Mage_Core_Block_Abstract
                 $helper = Mage::helper('cms');
                 $processor = $helper->getBlockTemplateProcessor();
                 $html = $processor->filter($block->getContent());
-                $this->addModelTags($block);
             }
         }
         return $html;

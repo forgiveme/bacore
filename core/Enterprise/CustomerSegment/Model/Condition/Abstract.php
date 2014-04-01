@@ -46,7 +46,7 @@ class Enterprise_CustomerSegment_Model_Condition_Abstract extends Mage_Rule_Mode
             parent::getDefaultOperatorInputByType();
             $this->_defaultOperatorInputByType['numeric'] = array('==', '!=', '>=', '>', '<=', '<');
             $this->_defaultOperatorInputByType['string'] = array('==', '!=', '{}', '!{}');
-            $this->_defaultOperatorInputByType['multiselect'] = array('==', '!=', '{}', '!{}');
+            $this->_defaultOperatorInputByType['multiselect'] = array('==', '!=', '[]', '![]');
 
         }
         return $this->_defaultOperatorInputByType;

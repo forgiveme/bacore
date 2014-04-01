@@ -619,30 +619,11 @@ class Mage_Catalog_Model_Resource_Category extends Mage_Catalog_Model_Resource_A
             ->addAttributeToSelect('custom_layout_update')
             ->addAttributeToSelect('custom_apply_to_products')
             ->addFieldToFilter('entity_id', array('in' => $pathIds))
-            ->addAttributeToFilter('custom_use_parent_settings', array(array('eq' => 0), array('null' => 0)), 'left')
+            ->addFieldToFilter('custom_use_parent_settings', 0)
             ->addFieldToFilter('level', array('neq' => 0))
             ->setOrder('level', 'DESC')
             ->load();
         return $collection->getFirstItem();
-    }
-
-    /**
-     * Prepare base collection setup for get categories list
-     *
-     * @param Mage_Catalog_Model_Category $category
-     * @return Mage_Catalog_Model_Resource_Category_Collection
-     */
-    protected function _getChildrenCategoriesBase($category)
-    {
-        $collection = $category->getCollection();
-        $collection->addAttributeToSelect('url_key')
-            ->addAttributeToSelect('name')
-            ->addAttributeToSelect('all_children')
-            ->addAttributeToSelect('is_anchor')
-            ->setOrder('position', Varien_Db_Select::SQL_ASC)
-            ->joinUrlRewrite();
-
-        return $collection;
     }
 
 
@@ -654,47 +635,19 @@ class Mage_Catalog_Model_Resource_Category extends Mage_Catalog_Model_Resource_A
      */
     public function getChildrenCategories($category)
     {
-        $collection = $this->_getChildrenCategoriesBase($category);
-        $collection->addAttributeToFilter('is_active', 1)
+        $collection = $category->getCollection();
+        /* @var $collection Mage_Catalog_Model_Resource_Category_Collection */
+        $collection->addAttributeToSelect('url_key')
+            ->addAttributeToSelect('name')
+            ->addAttributeToSelect('all_children')
+            ->addAttributeToSelect('is_anchor')
+            ->addAttributeToFilter('is_active', 1)
             ->addIdFilter($category->getChildren())
+            ->setOrder('position', Varien_Db_Select::SQL_ASC)
+            ->joinUrlRewrite()
             ->load();
 
         return $collection;
-    }
-
-
-    /**
-     * Return children categories lists with inactive
-     *
-     * @param Mage_Catalog_Model_Category $category
-     * @return Mage_Catalog_Model_Resource_Category_Collection
-     */
-    public function getChildrenCategoriesWithInactive($category)
-    {
-        $collection = $this->_getChildrenCategoriesBase($category);
-        $collection->addFieldToFilter('parent_id', $category->getId());
-
-        return $collection;
-    }
-
-    /**
-     * Returns select for category's children.
-     *
-     * @param $category
-     * @param bool $recursive
-     * @return Varien_Db_Select
-     */
-    protected function _getChildrenIdSelect($category, $recursive = true)
-    {
-        $adapter = $this->_getReadAdapter();
-        $select = $adapter->select()
-            ->from(array('m' => $this->getEntityTable()), 'entity_id')
-            ->where($adapter->quoteIdentifier('path') . ' LIKE ?', $category->getPath() . '/%');
-
-        if (!$recursive) {
-            $select->where($adapter->quoteIdentifier('level') . ' <= ?', $category->getLevel() + 1);
-        }
-        return $select;
     }
 
     /**
@@ -714,9 +667,10 @@ class Mage_Catalog_Model_Resource_Category extends Mage_Catalog_Model_Resource_A
             'attribute_id' => $attributeId,
             'store_id'     => $category->getStoreId(),
             'scope'        => 1,
+            'c_path'       => $category->getPath() . '/%'
         );
-        $select = $this->_getChildrenIdSelect($category, $recursive);
-        $select
+        $select = $this->_getReadAdapter()->select()
+            ->from(array('m' => $this->getEntityTable()), 'entity_id')
             ->joinLeft(
                 array('d' => $backendTable),
                 'd.attribute_id = :attribute_id AND d.store_id = 0 AND d.entity_id = m.entity_id',
@@ -727,22 +681,14 @@ class Mage_Catalog_Model_Resource_Category extends Mage_Catalog_Model_Resource_A
                 'c.attribute_id = :attribute_id AND c.store_id = :store_id AND c.entity_id = m.entity_id',
                 array()
             )
-            ->where($checkSql . ' = :scope');
+            ->where($checkSql . ' = :scope')
+            ->where($adapter->quoteIdentifier('path') . ' LIKE :c_path');
+        if (!$recursive) {
+            $select->where($adapter->quoteIdentifier('level') . ' <= :c_level');
+            $bind['c_level'] = $category->getLevel() + 1;
+        }
 
         return $adapter->fetchCol($select, $bind);
-    }
-
-    /**
-     * Return IDs of category's children along with inactive categories.
-     *
-     * @param $category
-     * @param bool $recursive
-     * @return array
-     */
-    public function getChildrenIds($category, $recursive = true)
-    {
-        $select = $this->_getChildrenIdSelect($category, $recursive);
-        return $this->_getReadAdapter()->fetchCol($select);
     }
 
     /**

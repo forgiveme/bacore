@@ -31,7 +31,8 @@
  * @package     Mage_XmlConnect
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_XmlConnect_Block_Adminhtml_Mobile_Form_Element_Page extends Varien_Data_Form_Element_Abstract
+class Mage_XmlConnect_Block_Adminhtml_Mobile_Form_Element_Page
+    extends Varien_Data_Form_Element_Abstract
 {
     /**
      * Init page element
@@ -97,8 +98,10 @@ class Mage_XmlConnect_Block_Adminhtml_Mobile_Form_Element_Page extends Varien_Da
     public function getElementHtml()
     {
         list($label, $element) = $this->getElements();
-        return $element->toHtml() . '</td><td class="label" style="width: 5em">'
-            . '<button class=" scalable save onclick_button" value="&minus;"><span>'
-            . Mage::helper('xmlconnect')->__('Delete') . '</span></button>';
+        return $element->toHtml()
+            . '</td><td class="label" style="width: 5em">'
+            . '<button class="scalable save onclick_button" value="&minus;"><span><span><span>'
+            . Mage::helper('xmlconnect')->__('Delete')
+            . '</span></span></span></button>';
     }
 }

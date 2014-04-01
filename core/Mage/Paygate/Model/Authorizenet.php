@@ -852,7 +852,10 @@ class Mage_Paygate_Model_Authorizenet extends Mage_Payment_Model_Method_Cc
                         $card,
                         false,
                         false,
-                        Mage::helper('paygate')->__('Parent Authorize.Net transaction (ID %s) expired', $realAuthTransactionId)
+                        Mage::helper('paygate')->__(
+                            'Parent Authorize.Net transaction (ID %s) expired',
+                            $realAuthTransactionId
+                        )
                     )
                 );
             }

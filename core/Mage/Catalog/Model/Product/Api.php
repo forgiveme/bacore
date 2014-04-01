@@ -83,7 +83,7 @@ class Mage_Catalog_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
     /**
      * Retrieve list of products with basic info (id, sku, type, set, name)
      *
-     * @param null|object|array $filters
+     * @param array $filters
      * @param string|int $store
      * @return array
      */
@@ -93,28 +93,34 @@ class Mage_Catalog_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
             ->addStoreFilter($this->_getStoreId($store))
             ->addAttributeToSelect('name');
 
-        /** @var $apiHelper Mage_Api_Helper_Data */
-        $apiHelper = Mage::helper('api');
-        $filters = $apiHelper->parseFilters($filters, $this->_filtersMap);
-        try {
-            foreach ($filters as $field => $value) {
-                $collection->addFieldToFilter($field, $value);
+        if (is_array($filters)) {
+            try {
+                foreach ($filters as $field => $value) {
+                    if (isset($this->_filtersMap[$field])) {
+                        $field = $this->_filtersMap[$field];
+                    }
+
+                    $collection->addFieldToFilter($field, $value);
+                }
+            } catch (Mage_Core_Exception $e) {
+                $this->_fault('filters_invalid', $e->getMessage());
             }
-        } catch (Mage_Core_Exception $e) {
-            $this->_fault('filters_invalid', $e->getMessage());
         }
+
         $result = array();
+
         foreach ($collection as $product) {
-            $result[] = array(
+//            $result[] = $product->getData();
+            $result[] = array( // Basic product data
                 'product_id' => $product->getId(),
                 'sku'        => $product->getSku(),
                 'name'       => $product->getName(),
                 'set'        => $product->getAttributeSetId(),
                 'type'       => $product->getTypeId(),
-                'category_ids' => $product->getCategoryIds(),
-                'website_ids'  => $product->getWebsiteIds()
+                'category_ids'       => $product->getCategoryIds()
             );
         }
+
         return $result;
     }
 
@@ -123,18 +129,13 @@ class Mage_Catalog_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      *
      * @param int|string $productId
      * @param string|int $store
-     * @param array      $attributes
-     * @param string     $identifierType
+     * @param array $attributes
      * @return array
      */
     public function info($productId, $store = null, $attributes = null, $identifierType = null)
     {
-        // make sku flag case-insensitive
-        if (!empty($identifierType)) {
-            $identifierType = strtolower($identifierType);
-        }
-
         $product = $this->_getProduct($productId, $store, $identifierType);
+
 
         $result = array( // Basic product data
             'product_id' => $product->getId(),
@@ -357,15 +358,7 @@ class Mage_Catalog_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     public function getSpecialPrice($productId, $store = null)
     {
-        $product = $this->_getProduct($productId, $store);
-
-        $result = array(
-            'special_price'     => $product->getSpecialPrice(),
-            'special_from_date' => $product->getSpecialFromDate(),
-            'special_to_date'   => $product->getSpecialToDate()
-        );
-
-        return $result;
+        return $this->info($productId, $store, array('special_price', 'special_from_date', 'special_to_date'));
     }
 
     /**

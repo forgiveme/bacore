@@ -27,11 +27,6 @@
 $installer = $this;
 $installer->startSetup();
 
-$installer->getConnection()->changeColumn(
-    $installer->getTable('xmlconnect/queue'),
-    'exec_time',
-    'exec_time',
-    'TIMESTAMP NULL DEFAULT NULL'
-);
+$installer->getConnection()->changeColumn($installer->getTable('xmlconnect/queue'), 'exec_time', 'exec_time', 'TIMESTAMP NULL DEFAULT NULL');
 
 $installer->endSetup();

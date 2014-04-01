@@ -60,6 +60,7 @@ class Mage_XmlConnect_Model_Simplexml_Form_Element_Multiselect
 
         $valuesXmlObj = $xmlObj->addCustomChild('values');
         foreach ($this->getOptions() as $option) {
+
             if (empty($option['value'])) {
                 continue;
             }
@@ -69,7 +70,10 @@ class Mage_XmlConnect_Model_Simplexml_Form_Element_Multiselect
                 $selected = array('selected' => 1);
             }
 
-            $valuesXmlObj->addCustomChild('item', $option['value'], array('label' => $option['label']) + $selected);
+            $valuesXmlObj->addCustomChild('item', null, array(
+                'label' => $option['label'],
+                'value' => $option['value']
+            ) + $selected);
         }
 
         return $this;

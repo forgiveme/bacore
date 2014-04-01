@@ -523,7 +523,7 @@ class Mage_Catalog_Model_Product_Option_Type_File extends Mage_Catalog_Model_Pro
 
             return sprintf('<a href="%s" target="_blank">%s</a> %s',
                 $this->_getOptionDownloadUrl($urlRoute, $urlParams),
-                Mage::helper('core')->escapeHtml($title),
+                Mage::helper('core')->htmlEscape($title),
                 $sizes
             );
         } catch (Exception $e) {
@@ -570,7 +570,7 @@ class Mage_Catalog_Model_Product_Option_Type_File extends Mage_Catalog_Model_Pro
         try {
             $value = unserialize($optionValue);
             return sprintf('%s [%d]',
-                Mage::helper('core')->escapeHtml($value['title']),
+                Mage::helper('core')->htmlEscape($value['title']),
                 $this->getConfigurationItemOption()->getId()
             );
 

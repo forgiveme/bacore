@@ -43,12 +43,6 @@
  */
 class Mage_Catalog_Model_Product_Compare_Item extends Mage_Core_Model_Abstract
 {
-    /**
-     * Model cache tag
-     *
-     * @var string
-     */
-    protected $_cacheTag = 'catalog_compare_item';
 
     /**
      * Prefix of model events names

@@ -88,6 +88,7 @@ class Mage_Checkout_Block_Multishipping_Overview extends Mage_Sales_Block_Items_
             $this->setData('payment', $payment);
         }
         return $this->_getData('payment');
+        //return $this->getCheckout()->getQuote()->getPayment();
     }
 
     public function getShippingAddresses()

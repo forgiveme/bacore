@@ -31,7 +31,7 @@
  * @package     Mage_XmlConnect
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_XmlConnect_Block_Checkout_Pbridge_Result extends Mage_Core_Block_Abstract
+class Mage_XmlConnect_Block_Checkout_Pbridge_Result extends Mage_Core_Block_Template
 {
     /**
      * Return url for redirect with params of Payment Bridge incoming data

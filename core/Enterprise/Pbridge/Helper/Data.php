@@ -320,9 +320,8 @@ class Enterprise_Pbridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function prepareCart($order)
     {
-        /** @var $paypalCart Mage_Paypal_Model_Cart */
         $paypalCart = Mage::getModel('paypal/cart', array($order))->isDiscountAsItem(true);
-        return array($paypalCart->getItems(true), $paypalCart->getTotals(), $paypalCart->areItemsValid());
+        return array($paypalCart->getItems(true), $paypalCart->getTotals());
     }
 
     /**
@@ -343,29 +342,5 @@ class Enterprise_Pbridge_Helper_Data extends Mage_Core_Helper_Abstract
     public function setStoreId($storeId)
     {
         $this->_storeId = $storeId;
-    }
-
-    /**
-     * Get template for button in order review page if HSS method was selected
-     *
-     * @param string $name template name
-     * @param string $block buttons block name
-     * @return string
-     */
-    public function getReviewButtonTemplate($name, $block)
-    {
-        $quote = Mage::getSingleton('checkout/session')->getQuote();
-        if ($quote) {
-            $payment = $quote->getPayment();
-            if ($payment->getMethodInstance()->getIsDeferred3dCheck()) {
-                return $name;
-            }
-        }
-
-        if ($blockObject = Mage::getSingleton('core/layout')->getBlock($block)) {
-            return $blockObject->getTemplate();
-        }
-
-        return '';
     }
 }

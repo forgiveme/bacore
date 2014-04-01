@@ -62,7 +62,6 @@
             </index_setup>
         </resources>
         <index>
-            <index_model>index/indexer</index_model>
             <indexer>
                 
             </indexer>

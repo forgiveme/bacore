@@ -31,7 +31,8 @@
  * @package     Mage_XmlConnect
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_XmlConnect_Block_Adminhtml_Mobile_Form_Element_Font extends Varien_Data_Form_Element_Abstract
+class Mage_XmlConnect_Block_Adminhtml_Mobile_Form_Element_Font
+    extends Varien_Data_Form_Element_Abstract
 {
     /**
      * Init font element
@@ -96,7 +97,9 @@ class Mage_XmlConnect_Block_Adminhtml_Mobile_Form_Element_Font extends Varien_Da
         foreach ($this->getElements() as $element) {
             $elementsArray[] .= $element->toHtml();
         }
-        return $elementsArray[0] . $elementsArray[1] . '</td><td class="label" style="width: 2em !important">'
+        return $elementsArray[0]
+            . $elementsArray[1]
+            . '</td><td class="label" style="width: 2em !important">'
             . $elementsArray[2];
     }
 }

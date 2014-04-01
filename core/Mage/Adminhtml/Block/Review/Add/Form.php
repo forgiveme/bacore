@@ -36,6 +36,11 @@ class Mage_Adminhtml_Block_Review_Add_Form extends Mage_Adminhtml_Block_Widget_F
 {
     protected function _prepareForm()
     {
+        $statuses = Mage::getModel('review/review')
+            ->getStatusCollection()
+            ->load()
+            ->toOptionArray();
+
         $form = new Varien_Data_Form();
 
         $fieldset = $form->addFieldset('add_review_form', array('legend' => Mage::helper('review')->__('Review Details')));
@@ -56,7 +61,7 @@ class Mage_Adminhtml_Block_Review_Add_Form extends Mage_Adminhtml_Block_Widget_F
             'label'     => Mage::helper('review')->__('Status'),
             'required'  => true,
             'name'      => 'status_id',
-            'values'    => Mage::helper('review')->getReviewStatusesOptionArray(),
+            'values'    => $statuses,
         ));
 
         /**

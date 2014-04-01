@@ -66,17 +66,4 @@ class Enterprise_Wishlist_Block_Customer_Sidebar extends Mage_Wishlist_Block_Cus
     {
         return $this->_getHelper()->getWishlistItemCollection();
     }
-
-    /**
-     * Retrieve cache tags
-     *
-     * @return array
-     */
-    public function getCacheTags()
-    {
-        return array_merge(
-            parent::getCacheTags(),
-            $this->getItemsTags($this->getWishlistItems())
-        );
-    }
 }

@@ -337,14 +337,4 @@ class Enterprise_PageCache_Model_Container_CatalogProductItem
 
         return $block->toHtml();
     }
-
-    /**
-     * Retrieve cache id
-     *
-     * @return string
-     */
-    protected function _getCacheId()
-    {
-        return parent::_getCacheId() . $this->_getProductId();
-    }
 }

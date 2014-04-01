@@ -192,4 +192,22 @@ class Mage_Adminhtml_CacheController extends Mage_Adminhtml_Controller_Action
     {
         return Mage::getSingleton('admin/session')->isAllowed('system/cache');
     }
+     public function flushConfigAction(){
+         $clean= array((string)Mage::getConfig()->getNode('global/cache/prefix'). (string)Mage::getConfig()->getNode('global/cache/types/config/tags'));
+         Mage::app()->getCache()->getBackend()->refreshNiceTags($clean);
+         Mage::dispatchEvent('application_clean_cache', array('tags' => $clean));
+         $this->_getSession()->addSuccess(
+                Mage::helper('adminhtml')->__('The configuration cache has been cleaned.')
+            );
+         $this->_redirect('*/*');
+    }
+     public function flushLayoutAction(){
+         $clean= array((string)Mage::getConfig()->getNode('global/cache/prefix'). (string)Mage::getConfig()->getNode('global/cache/types/layout/tags'));
+         Mage::app()->getCache()->getBackend()->refreshNiceTags($clean);
+         Mage::dispatchEvent('application_clean_cache', array('tags' => $clean));
+         $this->_getSession()->addSuccess(
+                Mage::helper('adminhtml')->__('The layout cache has been cleaned.')
+            );
+         $this->_redirect('*/*');
+    }
 }

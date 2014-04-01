@@ -61,8 +61,6 @@ class Enterprise_PageCache_RequestController extends Mage_Core_Controller_Front_
             $sessionInfo[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER] = $cookieInfo;
             $sessionInfo[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_GROUP] = $cookieInfo;
             $sessionInfo[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN] = $cookieInfo;
-            $sessionInfo[Enterprise_PageCache_Model_Cookie::CUSTOMER_SEGMENT_IDS] = $cookieInfo;
-            $sessionInfo[Enterprise_PageCache_Model_Cookie::COOKIE_MESSAGE] = $cookieInfo;
             $sessionInfo = serialize($sessionInfo);
             $cacheInstance->save($sessionInfo, $cacheId, array(Enterprise_PageCache_Model_Processor::CACHE_TAG));
         }

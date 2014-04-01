@@ -25,13 +25,14 @@
  */
 
 /**
- * Tab design preview renderer
+ * Tab design preview xml renderer
  *
  * @category     Mage
  * @package      Mage_Xmlconnect
  * @author       Magento Core Team <core@magentocommerce.com>
  */
-class Mage_XmlConnect_Block_Adminhtml_Mobile_Edit_Tab_Design_Preview extends Mage_Adminhtml_Block_Template
+class Mage_XmlConnect_Block_Adminhtml_Mobile_Edit_Tab_Design_Preview
+    extends Mage_Adminhtml_Block_Template
 {
     /**
      * Set preview template
@@ -44,7 +45,9 @@ class Mage_XmlConnect_Block_Adminhtml_Mobile_Edit_Tab_Design_Preview extends Mag
         if (array_key_exists($device, Mage::helper('xmlconnect')->getSupportedDevices())) {
             $template = 'xmlconnect/edit/tab/design/preview_' . strtolower($device) . '.phtml';
         } else {
-            Mage::throwException($this->__('Device doesn\'t recognized. Unable to load a template.'));
+            Mage::throwException(
+                $this->__('Device doesn\'t recognized. Unable to load a template.')
+            );
         }
 
         $this->setTemplate($template);

@@ -179,9 +179,6 @@ class Enterprise_Wishlist_SearchController extends Mage_Core_Controller_Front_Ac
      */
     public function addtocartAction()
     {
-        if (!$this->_validateFormKey()) {
-            return $this->_redirect('*/*');
-        }
         $messages   = array();
         $addedItems = array();
         $notSalable = array();

@@ -28,11 +28,10 @@
  * Catalog product model
  *
  * @method Mage_Catalog_Model_Resource_Product getResource()
- * @method Mage_Catalog_Model_Product setHasError(bool $value)
- * @method null|bool getHasError()
+ * @method Mage_Catalog_Model_Resource_Product _getResource()
  *
- * @category    Mage
- * @package     Mage_Catalog
+ * @category   Mage
+ * @package    Mage_Catalog
  * @author      Magento Core Team <core@magentocommerce.com>
  */
 class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
@@ -166,7 +165,7 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
     public function getUrlModel()
     {
         if ($this->_urlModel === null) {
-            $this->_urlModel = Mage::getSingleton('catalog/factory')->getProductUrlInstance();
+            $this->_urlModel = Mage::getSingleton('catalog/product_url');
         }
         return $this->_urlModel;
     }
@@ -1326,7 +1325,7 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
     public function getIsSalable()
     {
         $productType = $this->getTypeInstance(true);
-        if (method_exists($productType, 'getIsSalable')) {
+        if (is_callable(array($productType, 'getIsSalable'))) {
             return $productType->getIsSalable($this);
         }
         if ($this->hasData('is_salable')) {
@@ -1535,9 +1534,6 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
      */
     public function getRequestPath()
     {
-        if (!$this->_getData('request_path')) {
-            $this->getProductUrl();
-        }
         return $this->_getData('request_path');
     }
 
@@ -1918,7 +1914,7 @@ class Mage_Catalog_Model_Product extends Mage_Catalog_Model_Abstract
         $products = $this->_getResource()->getProductsSku($productIds);
         if (count($products)) {
             foreach ($products as $product) {
-                if (!strlen($product['sku'])) {
+                if (empty($product['sku'])) {
                     return false;
                 }
             }

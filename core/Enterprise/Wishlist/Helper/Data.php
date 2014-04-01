@@ -47,7 +47,7 @@ class Enterprise_Wishlist_Helper_Data extends Mage_Wishlist_Helper_Data
      */
     protected function _createWishlistItemCollection()
     {
-        if ($this->isMultipleEnabled() && $this->getCustomer()) {
+        if ($this->isMultipleEnabled()) {
             return Mage::getModel('wishlist/item')->getCollection()
                 ->addCustomerIdFilter($this->getCustomer()->getId())
                 ->addStoreFilter(Mage::app()->getStore()->getWebsite()->getStoreIds())

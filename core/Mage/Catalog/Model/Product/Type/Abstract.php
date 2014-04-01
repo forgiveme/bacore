@@ -885,7 +885,12 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
      */
     public function assignProductToOption($optionProduct, $option, $product = null)
     {
-        $option->setProduct($optionProduct ? $optionProduct : $this->getProduct($product));
+        if ($optionProduct) {
+            $option->setProduct($optionProduct);
+        } else {
+            $option->setProduct($this->getProduct($product));
+        }
+
         return $this;
     }
 

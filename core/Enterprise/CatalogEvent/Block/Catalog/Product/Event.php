@@ -71,13 +71,4 @@ class Enterprise_CatalogEvent_Block_Catalog_Product_Event extends Enterprise_Cat
                !$this->getProduct()->getEventNoTicker();
     }
 
-    /**
-     * Retrieve block cache tags
-     *
-     * @return array
-     */
-    public function getCacheTags()
-    {
-        return array_merge(parent::getCacheTags(), $this->getProduct()->getCacheIdTags());
-    }
 }

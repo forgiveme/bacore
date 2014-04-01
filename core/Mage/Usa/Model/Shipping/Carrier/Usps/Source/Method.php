@@ -29,11 +29,10 @@ class Mage_Usa_Model_Shipping_Carrier_Usps_Source_Method
 {
     public function toOptionArray()
     {
-        /** @var $usps Mage_Usa_Model_Shipping_Carrier_Usps */
         $usps = Mage::getSingleton('usa/shipping_carrier_usps');
         $arr = array();
         foreach ($usps->getCode('method') as $v) {
-            $arr[] = array('value' => $v, 'label' => $usps->getMethodLabel($v));
+            $arr[] = array('value'=>$v, 'label'=>$v);
         }
         return $arr;
     }

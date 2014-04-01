@@ -148,7 +148,6 @@ class Enterprise_Pbridge_Model_Payment_Method_Pbridge extends Mage_Payment_Model
 
         parent::assignData($data);
         $this->setPbridgeResponse($pbridgeData);
-        Mage::getSingleton('enterprise_pbridge/session')->setToken($this->getPbridgeResponse('token'));
         return $this;
     }
 
@@ -243,9 +242,7 @@ class Enterprise_Pbridge_Model_Payment_Method_Pbridge extends Mage_Payment_Model
     {
         parent::validate();
         if (!$this->getPbridgeResponse('token')) {
-            Mage::throwException(
-                Mage::helper('enterprise_pbridge')->__('Payment Bridge authentication data is not present')
-            );
+            Mage::throwException(Mage::helper('enterprise_pbridge')->__('Payment Bridge authentication data is not present'));
         }
         return $this;
     }
@@ -282,7 +279,6 @@ class Enterprise_Pbridge_Model_Payment_Method_Pbridge extends Mage_Payment_Model
             $request->setData('customer_id',
                 Mage::helper('enterprise_pbridge')->getCustomerIdentifierByEmail($id, $order->getStore()->getId())
             );
-            $request->setData('numeric_customer_id', $id);
         }
 
         if (!$order->getIsVirtual()) {
@@ -343,7 +339,7 @@ class Enterprise_Pbridge_Model_Payment_Method_Pbridge extends Mage_Payment_Model
             ->setData('amount', $amount)
             ->setData('currency_code', $payment->getOrder()->getBaseCurrencyCode())
             ->setData('order_id', $payment->getOrder()->getIncrementId())
-            ->setData('is_first_capture', $payment->hasFirstCaptureFlag() ? $payment->getFirstCaptureFlag() : true);
+        ;
 
         $api = $this->_getApi()->doCapture($request);
         $this->_importResultToPayment($payment, $api->getResponse());
@@ -383,17 +379,12 @@ class Enterprise_Pbridge_Model_Payment_Method_Pbridge extends Mage_Payment_Model
                 ->setData('cc_number', $payment->getCcLast4())
             ;
 
-            $canRefundMore = $order->canCreditmemo();
+            $canRefundMore = $order->canCreditmemo(); // TODO: fix this to be able to create multiple refunds
             $allRefunds = (float)$amount
                 + (float)$order->getBaseTotalOnlineRefunded()
                 + (float)$order->getBaseTotalOfflineRefunded();
-            $isFullRefund = !$canRefundMore && (0.0001 > (float)$order->getBaseGrandTotal() - $allRefunds);
+            $isFullRefund = !$canRefundMore && (0 == (float)$order->getBaseGrandTotal() - $allRefunds);
             $request->setData('is_full_refund', (int)$isFullRefund);
-
-            // whether to close capture transaction
-            $invoiceCanRefundMore = $payment->getCreditmemo()->getInvoice()->canRefund();
-            $payment->setShouldCloseParentTransaction($invoiceCanRefundMore ? 0 : 1);
-            $payment->setIsTransactionClosed(1);
 
             $api = $this->_getApi()->doRefund($request);
             $this->_importResultToPayment($payment, $api->getResponse());
@@ -401,9 +392,7 @@ class Enterprise_Pbridge_Model_Payment_Method_Pbridge extends Mage_Payment_Model
             return $api->getResponse();
 
         } else {
-            Mage::throwException(
-                Mage::helper('enterprise_pbridge')->__('Impossible to issue a refund transaction, because capture transaction does not exist.')
-            );
+            Mage::throwException(Mage::helper('enterprise_pbridge')->__('Impossible to issue a refund transaction, because capture transaction does not exist.'));
         }
     }
 
@@ -455,8 +444,6 @@ class Enterprise_Pbridge_Model_Payment_Method_Pbridge extends Mage_Payment_Model
         $region = Mage::getModel('directory/region')->load($address->getData('region_id'));
         if ($region && $region->getId()) {
             $result['region'] = $region->getCode();
-        } else {
-            $result['region'] = $address->getRegion();
         }
 
         return $result;
@@ -481,7 +468,7 @@ class Enterprise_Pbridge_Model_Payment_Method_Pbridge extends Mage_Payment_Model
      */
     protected function _getCart(Mage_Core_Model_Abstract $order)
     {
-        list($items, $totals, $areItemsValid) = Mage::helper('enterprise_pbridge')->prepareCart($order);
+        list($items, $totals) = Mage::helper('enterprise_pbridge')->prepareCart($order);
         //Getting cart items
         $result = array();
 
@@ -489,7 +476,7 @@ class Enterprise_Pbridge_Model_Payment_Method_Pbridge extends Mage_Payment_Model
             $result['items'][] = $item->getData();
         }
 
-        return array_merge($result, $totals, array('items_valid' => $areItemsValid));
+        return array_merge($result, $totals);
     }
 
     /**

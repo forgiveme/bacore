@@ -288,23 +288,4 @@ class Enterprise_GiftWrapping_Model_Observer
             ->setGwTaxAmount($orderItem->getGwTaxAmount());
         return $this;
     }
-
-    /**
-     * Add gift wrapping info for item to pdf (invoice, creditmemo)
-     *
-     * @param Varien_Event_Observer $observer
-     */
-    public function addGiftWrappingInfoForItemToPdf(Varien_Event_Observer $observer)
-    {
-        $entityItem = $observer->getEvent()->getEntityItem();
-        $orderItem  = $entityItem->getOrderItem();
-        if (!$orderItem->getGwPrice()) {
-            return;
-        }
-
-        $transportObject = $observer->getEvent()->getTransportObject();
-        $rendererTypeList = $transportObject->getRendererTypeList();
-        $rendererTypeList['giftwrapping'] = 'giftwrapping';
-        $transportObject->setRendererTypeList($rendererTypeList);
-    }
 }

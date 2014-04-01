@@ -50,7 +50,7 @@ class Enterprise_Pbridge_Model_Payment_Method_Firstdata extends Mage_Payment_Mod
     protected $_canVoid                 = false;
     protected $_canUseInternal          = true;
     protected $_canUseCheckout          = true;
-    protected $_canUseForMultishipping  = true;
+    protected $_canUseForMultishipping  = false;
     protected $_canSaveCc               = false;
 
     /**

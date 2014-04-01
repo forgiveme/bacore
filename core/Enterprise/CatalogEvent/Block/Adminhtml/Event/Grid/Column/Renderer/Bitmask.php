@@ -45,6 +45,6 @@ class Enterprise_CatalogEvent_Block_Adminhtml_Event_Grid_Column_Renderer_Bitmask
             }
         }
 
-        return $this->escapeHtml(implode(', ', $result));
+        return $this->htmlEscape(implode(', ', $result));
     }
 }

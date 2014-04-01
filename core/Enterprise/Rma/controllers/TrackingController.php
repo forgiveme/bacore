@@ -145,9 +145,7 @@ class Enterprise_Rma_TrackingController extends Mage_Core_Controller_Front_Actio
                     $pdf = new Zend_Pdf();
                     $page = $shipping->createPdfPageFromImageString($labelContent);
                     if (!$page) {
-                        $this->_getSession()->addError(
-                            Mage::helper('sales')->__('File extension not known or unsupported type in the following shipment: %s', $shipping->getIncrementId())
-                        );
+                        $this->_getSession()->addError(Mage::helper('sales')->__('File extension not known or unsupported type in the following shipment: %s', $shipment->getIncrementId()));
                     }
                     $pdf->pages[] = $page;
                     $pdfContent = $pdf->render();

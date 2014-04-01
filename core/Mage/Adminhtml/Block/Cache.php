@@ -47,6 +47,20 @@ class Mage_Adminhtml_Block_Cache extends Mage_Adminhtml_Block_Widget_Grid_Contai
             'onclick'   => 'confirmSetLocation(\''.$message.'\', \'' . $this->getFlushStorageUrl() .'\')',
             'class'     => 'delete',
         ));
+        if((int)Mage::app()->getCacheInstance()->canUse('config') == 1){
+            $this->_addButton('flush_config', array(
+                'label'     => Mage::helper('core')->__('Flush Config Clean'),
+                 'onclick'   => 'setLocation(\'' .  $this->getFlushConfigUrl() .'\')',
+                'class'     => 'delete',
+            ));
+        }
+       if((int)Mage::app()->getCacheInstance()->canUse('layout') == 1){
+            $this->_addButton('flush_layout', array(
+                'label'     => Mage::helper('core')->__('Flush Layout Clean'),
+                 'onclick'   => 'setLocation(\'' .  $this->getFlushLayoutUrl() .'\')',
+                'class'     => 'delete',
+            ));
+       }
     }
 
     /**
@@ -56,7 +70,20 @@ class Mage_Adminhtml_Block_Cache extends Mage_Adminhtml_Block_Widget_Grid_Contai
     {
         return $this->getUrl('*/*/flushAll');
     }
-
+     /**
+     * Get url for clean cache config
+     */
+    public function getFlushConfigUrl()
+    {
+        return $this->getUrl('*/*/flushConfig');
+    }
+     /**
+     * Get url for clean cache layout
+     */
+    public function getFlushLayoutUrl()
+    {
+        return $this->getUrl('*/*/flushLayout');
+    }
     /**
      * Get url for clean cache storage
      */

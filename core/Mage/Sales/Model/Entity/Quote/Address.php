@@ -47,7 +47,7 @@ class Mage_Sales_Model_Entity_Quote_Address extends Mage_Eav_Model_Entity_Abstra
         $attributes = $this->loadAllAttributes()->getAttributesByCode();
         foreach ($attributes as $attrCode=>$attr) {
             $backend = $attr->getBackend();
-            if (method_exists($backend, 'collectTotals')) {
+            if (is_callable(array($backend, 'collectTotals'))) {
                 $backend->collectTotals($address);
             }
         }
@@ -59,7 +59,7 @@ class Mage_Sales_Model_Entity_Quote_Address extends Mage_Eav_Model_Entity_Abstra
         $attributes = $this->loadAllAttributes()->getAttributesByCode();
         foreach ($attributes as $attrCode=>$attr) {
             $frontend = $attr->getFrontend();
-            if (method_exists($frontend, 'fetchTotals')) {
+            if (is_callable(array($frontend, 'fetchTotals'))) {
                 $frontend->fetchTotals($address);
             }
         }

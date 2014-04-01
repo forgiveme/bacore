@@ -782,7 +782,7 @@ class Enterprise_AdminGws_Model_Controllers extends Enterprise_AdminGws_Model_Ob
     {
         $id = $this->_request->getParam('id');
         if ($id) {
-            $object = Mage::getSingleton('core/factory')->getUrlRewriteInstance()->load($id);
+            $object = Mage::getModel('core/url_rewrite')->load($id);
             if ($object && $object->getId()) {
                 if (!$this->_role->hasStoreAccess($object->getStoreId())) {
                     $this->_forward();

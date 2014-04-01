@@ -39,9 +39,7 @@ class Mage_Rss_Block_Catalog_Tag extends Mage_Rss_Block_Catalog_Abstract
         * setting cache to save the rss for 10 minutes
         */
         $tagModel = Mage::registry('tag_model');
-        if ($tagModel) {
-            $this->setCacheKey('rss_catalog_tag_' . $this->getStoreId() . '_' . $tagModel->getName());
-        }
+        $this->setCacheKey('rss_catalog_tag_' . $this->getStoreId() . '_' . $tagModel->getName());
         $this->setCacheLifetime(600);
     }
 

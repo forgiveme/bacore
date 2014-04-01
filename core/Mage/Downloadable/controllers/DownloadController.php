@@ -85,7 +85,6 @@ class Mage_Downloadable_DownloadController extends Mage_Core_Controller_Front_Ac
         $this->getResponse()
             ->sendHeaders();
 
-        session_write_close();
         $helper->output();
     }
 

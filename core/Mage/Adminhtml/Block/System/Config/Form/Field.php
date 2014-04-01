@@ -58,7 +58,9 @@ class Mage_Adminhtml_Block_System_Config_Form_Field
     {
         $id = $element->getHtmlId();
 
-        $html = '<td class="label"><label for="'.$id.'">'.$element->getLabel().'</label></td>';
+        $useContainerId = $element->getData('use_container_id');
+        $html = '<tr id="row_' . $id . '">'
+              . '<td class="label"><label for="'.$id.'">'.$element->getLabel().'</label></td>';
 
         //$isDefault = !$this->getRequest()->getParam('website') && !$this->getRequest()->getParam('store');
         $isMultiple = $element->getExtType()==='multiple';
@@ -85,14 +87,8 @@ class Mage_Adminhtml_Block_System_Config_Form_Field
             }
         }
 
-        if ($element->getTooltip()) {
-            $html .= '<td class="value with-tooltip">';
-            $html .= $this->_getElementHtml($element);
-            $html .= '<div class="field-tooltip"><div>' . $element->getTooltip() . '</div></div>';
-        } else {
-            $html .= '<td class="value">';
-            $html .= $this->_getElementHtml($element);
-        };
+        $html.= '<td class="value">';
+        $html.= $this->_getElementHtml($element);
         if ($element->getComment()) {
             $html.= '<p class="note"><span>'.$element->getComment().'</span></p>';
         }
@@ -118,11 +114,9 @@ class Mage_Adminhtml_Block_System_Config_Form_Field
 
             // default value
             $html.= '<td class="use-default">';
-            $html.= '<input id="' . $id . '_inherit" name="'
-                . $namePrefix . '[inherit]" type="checkbox" value="1" class="checkbox config-inherit" '
-                . $inherit . ' onclick="toggleValueElements(this, Element.previous(this.parentNode))" /> ';
-            $html.= '<label for="' . $id . '_inherit" class="inherit" title="'
-                . htmlspecialchars($defText) . '">' . $checkboxLabel . '</label>';
+            //$html.= '<input id="'.$id.'_inherit" name="'.$namePrefix.'[inherit]" type="checkbox" value="1" class="input-checkbox config-inherit" '.$inherit.' onclick="$(\''.$id.'\').disabled = this.checked">';
+            $html.= '<input id="'.$id.'_inherit" name="'.$namePrefix.'[inherit]" type="checkbox" value="1" class="checkbox config-inherit" '.$inherit.' onclick="toggleValueElements(this, Element.previous(this.parentNode))" /> ';
+            $html.= '<label for="'.$id.'_inherit" class="inherit" title="'.htmlspecialchars($defText).'">'.$checkboxLabel.'</label>';
             $html.= '</td>';
         }
 
@@ -140,18 +134,8 @@ class Mage_Adminhtml_Block_System_Config_Form_Field
         }
         $html.= '</td>';
 
-        return $this->_decorateRowHtml($element, $html);
+        $html.= '</tr>';
+        return $html;
     }
 
-    /**
-     * Decorate field row html
-     *
-     * @param Varien_Data_Form_Element_Abstract $element
-     * @param string $html
-     * @return string
-     */
-    protected function _decorateRowHtml($element, $html)
-    {
-        return '<tr id="row_' . $element->getHtmlId() . '">' . $html . '</tr>';
-    }
 }

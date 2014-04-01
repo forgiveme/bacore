@@ -44,9 +44,7 @@ class Enterprise_Search_Adminhtml_Catalog_SearchController extends Mage_Adminhtm
         if ($id) {
             $model->load($id);
             if (! $model->getId()) {
-                Mage::getSingleton('adminhtml/session')->addError(
-                    Mage::helper('catalog')->__('This search no longer exists.')
-                );
+                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('catalog')->__('This search no longer exists.'));
                 $this->_redirect('*/*');
                 return;
             }

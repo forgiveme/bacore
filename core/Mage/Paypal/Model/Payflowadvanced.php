@@ -54,11 +54,4 @@ class Mage_Paypal_Model_Payflowadvanced extends Mage_Paypal_Model_Payflowlink
      * @var string
      */
     protected $_infoBlockType = 'paypal/payflow_advanced_info';
-
-    /**
-     * Controller for callback urls
-     *
-     * @var string
-     */
-    protected $_callbackController = 'payflowadvanced';
 }

@@ -71,13 +71,6 @@ class Mage_Wishlist_Model_Wishlist extends Mage_Core_Model_Abstract
     protected $_storeIds = null;
 
     /**
-     * Entity cache tag
-     *
-     * @var string
-     */
-    protected $_cacheTag = 'wishlist';
-
-    /**
      * Initialize resource model
      */
     protected function _construct()
@@ -218,9 +211,6 @@ class Mage_Wishlist_Model_Wishlist extends Mage_Core_Model_Abstract
                 ->setProduct($product)
                 ->setQty($qty)
                 ->save();
-
-            Mage::dispatchEvent('wishlist_item_add_after', array('wishlist' => $this));
-
             if ($item->getId()) {
                 $this->getItemCollection()->addItem($item);
             }
@@ -249,12 +239,6 @@ class Mage_Wishlist_Model_Wishlist extends Mage_Core_Model_Abstract
                 ->addWishlistFilter($this)
                 ->addStoreFilter($this->getSharedStoreIds($currentWebsiteOnly))
                 ->setVisibilityFilter();
-
-            if (Mage::app()->getStore()->isAdmin()) {
-                $customer = Mage::getModel('customer/customer')->load($this->getCustomerId());
-                $this->_itemCollection->setWebsiteId($customer->getWebsiteId());
-                $this->_itemCollection->setCustomerGroupId($customer->getGroupId());
-            }
         }
 
         return $this->_itemCollection;
