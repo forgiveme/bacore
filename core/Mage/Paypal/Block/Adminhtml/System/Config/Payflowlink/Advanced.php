@@ -25,7 +25,7 @@
  */
 
 /**
- * Renderer for Payments Advanced information
+ * Renderer for Payflow Link information
  *
  * @category   Mage
  * @package    Mage_Paypal

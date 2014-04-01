@@ -58,9 +58,7 @@ class Enterprise_Reminder_Model_System_Config_Backend_Cron extends Mage_Core_Mod
                     $cronExprString = "{$minutes} * * * *";
                 }
                 else {
-                    Mage::throwException(
-                        Mage::helper('enterprise_reminder')->__('Please, specify correct minutes of hour.')
-                    );
+                    Mage::throwException(Mage::helper('enterprise_reminder')->__('Please, specify correct minutes of hour.'));
                 }
             }
             elseif ($frequency == $daily) {

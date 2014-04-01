@@ -204,7 +204,7 @@ class Mage_GiftMessage_Block_Adminhtml_Sales_Order_View_Items extends Mage_Admin
      */
     public function getSender()
     {
-        return $this->escapeHtml($this->getMessage()->getSender());
+        return $this->htmlEscape($this->getMessage()->getSender());
     }
 
     /**
@@ -214,7 +214,7 @@ class Mage_GiftMessage_Block_Adminhtml_Sales_Order_View_Items extends Mage_Admin
      */
     public function getRecipient()
     {
-        return $this->escapeHtml($this->getMessage()->getRecipient());
+        return $this->htmlEscape($this->getMessage()->getRecipient());
     }
 
     /**
@@ -224,6 +224,6 @@ class Mage_GiftMessage_Block_Adminhtml_Sales_Order_View_Items extends Mage_Admin
      */
     public function getMessageText()
     {
-        return $this->escapeHtml($this->getMessage()->getMessage());
+        return $this->htmlEscape($this->getMessage()->getMessage());
     }
 }
